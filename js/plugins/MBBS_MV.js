@@ -1162,7 +1162,7 @@ Game_EFS_Hero.prototype.actionByInput = function() {
         }
     }
     if (!this.isJumping()) {
-        if (Input.isTriggered('ok')) {
+        if (Input.isTriggered("pagedown")) {
             // this.cancelAction();
             // this.resetAnimation();
             var lastDirectionFix = this.isDirectionFixed();
