@@ -16,5 +16,5 @@ var $plugins =
 {"name":"TDDP_FluidTimestep","status":true,"description":"1.0.2 Fixes MV's framerate dependent timestepping. Makes the gamespeed the same regardless of framerate.","parameters":{}},
 {"name":"Yami_SkipTitle","status":true,"description":"Skip the title scene for testing purpose.","parameters":{}},
 {"name":"MrTS_EventNames","status":false,"description":"Allows events to show their names above them.","parameters":{"Default Range":"5","Font Size":"24","Fade":"True","Fade Timer":"30"}},
-{"name":"InputExtra","status":true,"description":"Extend Input with the full keyboard.","parameters":{}}
+{"name":"InputExtra","status":false,"description":"Extend Input with the full keyboard.","parameters":{}}
 ];
