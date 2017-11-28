@@ -3,8 +3,8 @@
 // MBBS_MV.js
 //=============================================================================
 /*:
- * @plugindesc v1.0 Basic EFS Core Engine
- * @author Chivalry Studio Plugins / Ivan
+ * @plugindesc v1.1 MBBS_MV - DX4D remaster
+ * @author DX4D & Chivalry Studio Plugins / Ivan
  * @param ---Game---
  * @default 
  * @param Maxium Armies 
@@ -35,6 +35,10 @@
  * @desc don't set this more than 18 unless you modified the Game_CommandUnits Formations.
  * Default: 18
  * @default 18
+ * @param Jump Distance
+ * @desc The maximum distance (in tiles) that a character can jump.
+ * Default: 2
+ * @default 2
 
 */
 var Imported = Imported || {};
@@ -59,6 +63,7 @@ MBBS_MV.Param.maxiumInfantry,
 MBBS_MV.Param.maxiumCalvary,
 MBBS_MV.Param.maxiumMissle,
 ];
+MBBS_MV.Param.jumpDistance = Number(MBBS_MV.Parameters['Jump Distance']);
 //=============================================================================
 // Plugin commands -- Game_Interpreter
 //=============================================================================
@@ -1155,12 +1160,16 @@ Game_EFS_Hero.prototype.moveByInput = function() {
     }
 };
 Game_EFS_Hero.prototype.actionByInput = function() {
-    //attack
+	
+    //ATTACK
     if (!this.isAttacking() && !this.isJumping()) {
         if (Input.isTriggered('ok')) {
             this.attack();
         }
     }
+	
+	//JUMP
+	var _jumpDistance = MBBS_MV.Param.jumpDistance;
     if (!this.isJumping()) {
         if (Input.isTriggered("pagedown")) {
             // this.cancelAction();
@@ -1170,16 +1179,16 @@ Game_EFS_Hero.prototype.actionByInput = function() {
             var d = this.direction();
             switch(d){
                 case 2:
-                    this.jump(0,2);
+                    this.jump(0,_jumpDistance);
                     break;
                 case 4:
-                    this.jump(-2,0);
+                    this.jump(-_jumpDistance,0);
                     break;
                 case 6:
-                    this.jump(2,0);
+                    this.jump(_jumpDistance,0);
                     break;
                 case 8:
-                    this.jump(0,-2);
+                    this.jump(0,-_jumpDistance);
             }
             this.setDirectionFix(lastDirectionFix);
             
@@ -1210,7 +1219,7 @@ Game_EFS_Hero.prototype.attack = function() {
         this._characterIndex =  1+Math.randomInt(3);
     }
     //main core of damaging
-    this.findTargesThenDamage();
+    this.findTargetsThenDamage();
 
 };
 Game_EFS_Hero.prototype.onAttackOver = function() {
@@ -1225,7 +1234,7 @@ Game_EFS_Hero.prototype.onAttackOver = function() {
     this.cancelAction();
 
 };
-Game_EFS_Hero.prototype.findTargesThenDamage = function() {
+Game_EFS_Hero.prototype.findTargetsThenDamage = function() {
     var listFighters = [];
     this._availableTargets.forEach(function(target) {
         if(target.isDead())return;
