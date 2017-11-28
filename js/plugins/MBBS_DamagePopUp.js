@@ -2,20 +2,37 @@
 // Mount Blade Battle System Engine Plugins - Damage Pop Up
 // MBBS_DamagePopUp.js
 //=============================================================================
+
+//PARAMETERS
 /*:
- * @plugindesc v1.0 MBBS Plugins: 
-   群战系统MV插件系列之 - 群战伤害显示
-   MBBS_DamagePopUp
- * @author Chivalry Studio Plugins / Ivan
-
-
+ * @plugindesc v1.1 MBBS_DamagePopUp - DX4D remaster
+ * @author DX4D & Chivalry Studio Plugins / Ivan
+ *
+ *
+ * @param ---GENERAL---
+ * @default
+ * 
+ * @param Show Damage
+ * @text Show Battle Damage?
+ * @parent ---GENERAL---
+ * @type boolean
+ * @on Enable
+ * @off Disable
+ * @desc Show damage during battle? ON - true   OFF - false
+ * @default true
 */
+
+// Register Plugin
 var Imported = Imported || {};
 Imported.MBBS_DamagePopUp = true;
 
+// Initialize the MBBS_MV namespace
 var MBBS_MV = MBBS_MV || {};
 MBBS_MV.DamagePopUp = MBBS_MV.MBBS_DamagePopUp || {};
 
+// Load Plugin Parameters
+MBBS_MV.Parameters = PluginManager.parameters('MBBS_DamagePopUp');
+MBBS_MV.showDamage = JSON.parse(MBBS_MV.Parameters['Show Damage']);
 
 //=============================================================================
 // Sprite Character
@@ -41,7 +58,7 @@ Sprite_Character.prototype.updateDamagePopup = function() {
   }
 };
 Sprite_Character.prototype.setupDamagePopup = function() {
-  if (this._character.isDamagePopupRequested()) {
+  if (MBBS_MV.showDamage && this._character.isDamagePopupRequested()) {
       if (this._character.isSpriteVisible()) {
           var sprite = new Sprite_EFS_Damage();
           sprite.x = this.x + this.damageOffsetX();
